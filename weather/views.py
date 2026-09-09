@@ -1,4 +1,6 @@
 import requests
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiParameter, extend_schema
 from rest_framework import filters, generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -16,6 +18,28 @@ class CityListView(generics.ListAPIView):
 
 
 class CurrentWeatherView(APIView):
+    @extend_schema(
+        summary="Current weather for a city",
+        description=(
+            "Returns the latest weather for a city. Uses a cached snapshot when it is "
+            "still fresh, otherwise fetches from the weather provider."
+        ),
+        parameters=[
+            OpenApiParameter(
+                name="city_id",
+                type=OpenApiTypes.INT,
+                location=OpenApiParameter.QUERY,
+                required=True,
+                description="ID of the city to get weather for.",
+            )
+        ],
+        responses={
+            200: WeatherSnapshotSerializer,
+            400: OpenApiTypes.OBJECT,
+            404: OpenApiTypes.OBJECT,
+            502: OpenApiTypes.OBJECT,
+        },
+    )
     def get(self, request):
         city_id = request.query_params.get("city_id")
 

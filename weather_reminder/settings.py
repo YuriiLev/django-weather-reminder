@@ -43,20 +43,13 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework_simplejwt",
+    "drf_spectacular",
     "accounts",
     "weather",
     "subscriptions",
 ]
 
 AUTH_USER_MODEL = "accounts.User"
-REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ),
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 20,
-}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -118,6 +111,19 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Django REST Framework
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 20,
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/6.1/topics/i18n/
 
@@ -137,9 +143,6 @@ STATIC_URL = "static/"
 
 
 # Email
-# https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
-
-# Email
 
 EMAIL_BACKEND = config(
     "EMAIL_BACKEND",
@@ -152,10 +155,12 @@ EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
 DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="noreply@example.com")
 
+
 # Weather provider
 
 WEATHER_API_KEY = config("WEATHER_API_KEY")
 WEATHER_CACHE_MINUTES = config("WEATHER_CACHE_MINUTES", default=30, cast=int)
+
 
 # Celery
 
@@ -164,6 +169,7 @@ CELERY_RESULT_BACKEND = None
 CELERY_TASK_SERIALIZER = "json"
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TIMEZONE = "UTC"
+
 CELERY_BEAT_SCHEDULE = {
     "process-subscriptions-hourly": {
         "task": "subscriptions.tasks.process_subscriptions",
@@ -171,6 +177,23 @@ CELERY_BEAT_SCHEDULE = {
     },
 }
 
+
 # Scheduler endpoint
 
 SCHEDULER_TOKEN = config("SCHEDULER_TOKEN", default="")
+
+
+# API documentation
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "DjangoWeatherReminder API",
+    "DESCRIPTION": (
+        "Weather notification service. Users subscribe to cities and receive "
+        "updates by email or webhook on a chosen schedule."
+    ),
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "COMPONENT_SPLIT_REQUEST": True,
+}
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
