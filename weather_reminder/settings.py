@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 from pathlib import Path
 
 import dj_database_url
+from celery.schedules import crontab
 from decouple import Csv, config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -163,3 +164,13 @@ CELERY_RESULT_BACKEND = None
 CELERY_TASK_SERIALIZER = "json"
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TIMEZONE = "UTC"
+CELERY_BEAT_SCHEDULE = {
+    "process-subscriptions-hourly": {
+        "task": "subscriptions.tasks.process_subscriptions",
+        "schedule": crontab(minute=0),
+    },
+}
+
+# Scheduler endpoint
+
+SCHEDULER_TOKEN = config("SCHEDULER_TOKEN", default="")
