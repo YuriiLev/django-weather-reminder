@@ -143,3 +143,8 @@ MAILERS = {
         "BACKEND": "django.core.mail.backends.console.EmailBackend",
     },
 }
+
+# Weather provider
+
+WEATHER_API_KEY = config("WEATHER_API_KEY")
+WEATHER_CACHE_MINUTES = config("WEATHER_CACHE_MINUTES", default=30, cast=int)
