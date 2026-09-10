@@ -9,3 +9,12 @@ exclude = [
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "DJ"]
 ignore = ["E501"]
+
+[tool.coverage.run]
+source = ["accounts", "weather", "subscriptions"]
+omit = [
+    "*/migrations/*",
+    "*/apps.py",
+    "*/__init__.py",
+    "*/tests/*",
+]
