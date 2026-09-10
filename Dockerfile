@@ -13,6 +13,9 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
+
+RUN SECRET_KEY=build-only DATABASE_URL=sqlite:// WEATHER_API_KEY=build-only python manage.py collectstatic --noinput
+
 RUN useradd --create-home --shell /bin/bash appuser \
     && chown -R appuser:appuser /app
 USER appuser
