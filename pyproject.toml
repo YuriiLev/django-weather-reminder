@@ -11,7 +11,7 @@ select = ["E", "F", "I", "UP", "B", "DJ"]
 ignore = ["E501"]
 
 [tool.coverage.run]
-source = ["accounts", "weather", "subscriptions"]
+source = ["accounts", "weather", "subscriptions", "web"]
 omit = [
     "*/migrations/*",
     "*/apps.py",

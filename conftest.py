@@ -6,6 +6,16 @@ from subscriptions.models import Subscription
 from weather.models import City, WeatherSnapshot
 
 
+@pytest.fixture(autouse=True)
+def use_plain_static_storage(settings):
+    settings.STORAGES = {
+        **settings.STORAGES,
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
+
+
 @pytest.fixture
 def api_client():
     return APIClient()
