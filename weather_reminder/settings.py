@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "accounts",
     "weather",
     "subscriptions",
+    "web",
 ]
 
 AUTH_USER_MODEL = "accounts.User"
