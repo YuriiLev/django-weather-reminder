@@ -1,0 +1,50 @@
+{% extends "web/base.html" %}
+
+{% block title %}My subscriptions — Weather Reminder{% endblock %}
+
+{% block content %}
+<h1>My subscriptions</h1>
+<p class="subtitle">Weather updates you're currently receiving.</p>
+
+{% if subscriptions %}
+    {% for subscription in subscriptions %}
+        <div class="card">
+            <div class="subscription">
+                <div>
+                    <div class="subscription-city">{{ subscription.city }}</div>
+                    <div class="subscription-meta">
+                        Every {{ subscription.get_period_hours_display|lower }} ·
+                        {{ subscription.get_delivery_method_display }}
+                        {% if not subscription.is_active %} · paused{% endif %}
+                    </div>
+                    <div class="subscription-meta">
+                        {% if subscription.last_notified_at %}
+                            Last sent {{ subscription.last_notified_at|date:"j M Y, H:i" }} UTC
+                        {% else %}
+                            Not sent yet
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="subscription-actions">
+                    <a href="{% url 'web:subscription_edit' subscription.pk %}"
+                       class="button button-secondary">Edit</a>
+                    <form method="post"
+                          action="{% url 'web:subscription_delete' subscription.pk %}"
+                          class="inline-form">
+                        {% csrf_token %}
+                        <button type="submit" class="button-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="card empty">
+        <p>You haven't subscribed to any cities yet.</p>
+    </div>
+{% endif %}
+
+<p style="margin-top: 1.5rem;">
+    <a href="{% url 'web:subscription_create' %}" class="button">Add a subscription</a>
+</p>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "web/base.html" %}
+
+{% block title %}Weather Reminder — weather updates by email{% endblock %}
+
+{% block content %}
+<h1>Weather updates, on your schedule</h1>
+<p class="subtitle">
+    Pick a city, choose how often, and get the forecast delivered by email or webhook.
+</p>
+
+<div class="card">
+    <h2>How it works</h2>
+    <ol>
+        <li>Create an account with your email address.</li>
+        <li>Subscribe to one or more cities.</li>
+        <li>Choose a delivery interval — every 1, 3, 6 or 12 hours.</li>
+        <li>Weather arrives automatically. Change or cancel any time.</li>
+    </ol>
+</div>
+
+<div class="card">
+    <h2>For developers</h2>
+    <p>
+        Everything here is also available over a REST API with JWT authentication,
+        so other services can manage subscriptions programmatically.
+    </p>
+    <p style="margin-top: 1rem;">
+        <a href="/api/docs/" class="button button-secondary">View API docs</a>
+    </p>
+</div>
+
+<p style="margin-top: 2rem;">
+    <a href="{% url 'web:signup' %}" class="button">Get started</a>
+</p>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "web/base.html" %}
+
+{% block title %}Log in — Weather Reminder{% endblock %}
+
+{% block content %}
+<div class="form-narrow">
+    <h1>Log in</h1>
+    <p class="subtitle">Manage your weather subscriptions.</p>
+
+    <div class="card">
+        <form method="post">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <ul class="errorlist">
+                    {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
+                </ul>
+            {% endif %}
+
+            {% for field in form %}
+                <p>
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <ul class="errorlist">
+                            {% for error in field.errors %}<li>{{ error }}</li>{% endfor %}
+                        </ul>
+                    {% endif %}
+                </p>
+            {% endfor %}
+
+            <button type="submit">Log in</button>
+        </form>
+    </div>
+
+    <p>No account yet? <a href="{% url 'web:signup' %}">Sign up</a></p>
+</div>
+{% endblock %}

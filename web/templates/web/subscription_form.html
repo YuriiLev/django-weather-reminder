@@ -1,0 +1,49 @@
+{% extends "web/base.html" %}
+
+{% block title %}
+    {% if is_edit %}Edit subscription{% else %}New subscription{% endif %} — Weather Reminder
+{% endblock %}
+
+{% block content %}
+<div class="form-narrow">
+    {% if is_edit %}
+        <h1>Edit subscription</h1>
+        <p class="subtitle">{{ subscription.city }}</p>
+    {% else %}
+        <h1>New subscription</h1>
+        <p class="subtitle">Choose a city and how often you want updates.</p>
+    {% endif %}
+
+    <div class="card">
+        <form method="post">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <ul class="errorlist">
+                    {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
+                </ul>
+            {% endif %}
+
+            {% for field in form %}
+                <p>
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <ul class="errorlist">
+                            {% for error in field.errors %}<li>{{ error }}</li>{% endfor %}
+                        </ul>
+                    {% endif %}
+                    {% if field.name == "webhook_url" %}
+                        <span class="helptext">Only needed if you chose webhook delivery.</span>
+                    {% endif %}
+                </p>
+            {% endfor %}
+
+            <button type="submit">
+                {% if is_edit %}Save changes{% else %}Subscribe{% endif %}
+            </button>
+            <a href="{% url 'web:dashboard' %}" class="button button-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
