@@ -1,3 +1,5 @@
+[![CI](https://github.com/YuriiLev/django-weather-reminder/actions/workflows/ci.yml/badge.svg)](https://github.com/YuriiLev/django-weather-reminder/actions/workflows/ci.yml)
+
 # DjangoWeatherReminder
 
 A REST API service that sends **weather notifications** for subscribed cities via **email** and **webhook**, on a schedule chosen per subscription (every 1, 3, 6, or 12 hours).
