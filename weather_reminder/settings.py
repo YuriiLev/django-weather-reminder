@@ -199,6 +199,7 @@ CELERY_RESULT_BACKEND = None
 CELERY_TASK_SERIALIZER = "json"
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TIMEZONE = "UTC"
+CELERY_BROKER_TRANSPORT_OPTIONS = {"polling_interval": 30}
 
 CELERY_BEAT_SCHEDULE = {
     "process-subscriptions-hourly": {
